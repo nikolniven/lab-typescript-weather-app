@@ -19,13 +19,17 @@ formElm.addEventListener('submit', (e) => {
 
   getLocation(locationName)
     .then((locationResponse) => {
-      // Here you should:
-      // 1. Use displayLocation() with the location data
-      displayLocation(locationResponse)
-      // 2. Use getCurrentWeather() to get weather data
-      getCurrentWeather(locationResponse);
-      // 3. Use displayWeatherData() to show the weather
-      displayWeatherData(locationResponse);
+      if (locationResponse.results && locationResponse.results.length > 0) {
+        const location = locationResponse.results[0]; // Get first location from results
+        displayLocation(location);
+        return getCurrentWeather(location); // Return this promise for chaining
+      } else {
+        throw new Error('No location found');
+      }
+    })
+    .then((weatherData) => {
+      // Now we can use the weather data
+      displayWeatherData(weatherData);
     })
     .catch((error) => {
       console.error('Error:', error);

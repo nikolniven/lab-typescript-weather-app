@@ -14,14 +14,13 @@ export async function getCurrentWeather(
   locationDetails: Location,
 ): Promise<WeatherResponse> {
   const url = `https://api.open-meteo.com/v1/forecast?latitude=${locationDetails.latitude}&longitude=${locationDetails.longitude}&current_weather=true&models=icon_global`;
-  axios.get<WeatherResponse>(url).then((response) => response.data);
-    const response_1 = await axios.get<WeatherResponse>(url);
-    return response_1.data;
 
+  const response = await axios.get<WeatherResponse>(url);
+  return response.data;
 }
 
 export function displayLocation(locationDetails: Location): void {
-  const locationContainerElem = document.getElementById('location-container');
+  const locationContainerElem = document.getElementById('location-name');
 
   if (locationContainerElem !== null) {
     locationContainerElem.innerHTML = locationDetails.name;
